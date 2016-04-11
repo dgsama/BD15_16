@@ -17,6 +17,7 @@ public class Program {
 		// String cadena = ReadString();
 		
 		exercise1_1();
+		exercise1_2();
 	}
 
 	private static Connection createConnection() {
@@ -70,8 +71,35 @@ public class Program {
 	 * 1.2. 32. Obtener un listado de los concesionarios cuyo promedio de coches
 	 * supera a la cantidad promedio de todos los concesionarios.
 	 */
-	public static void exercise1_2() {
-
+	public static void exercise1_2() throws SQLException {
+		conn = createConnection();
+		Statement stat = null;
+		ResultSet rs;
+		
+		System.out.println("Exercise 1_2 \n");
+		
+		try{
+			stat = conn.createStatement();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		String query ="SELECT cifc, avg(CANTIDAD) as average "
+				+ "FROM Distribucion "
+				+ "GROUP BY cifc "
+				+ "HAVING avg(CANTIDAD) > (select avg(cantidad)from distribucion)";
+		
+		rs = stat.executeQuery(query);
+		
+		while(rs.next()){
+			System.out.println(rs.getString("cifc") + "\t" + rs.getFloat("average"));
+		}
+		System.out.println();
+		
+		
+		rs.close();
+		stat.close();
+		conn.close();
 	}
 
 	/*
@@ -80,8 +108,36 @@ public class Program {
 	 * el nombre de las marcas de las que se han vendido coches de un color
 	 * introducido por el usuario.
 	 */
-	public static void exercise2() {
-
+	public static void exercise2() throws SQLException {
+		conn = createConnection();
+		Statement stat = null;
+		ResultSet rs;
+		
+		System.out.println("Exercise 2 \n");
+		
+		try{
+			stat = conn.createStatement();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		String query ="SELECT cifc, avg(CANTIDAD) as average "
+				+ "FROM Distribucion "
+				+ "GROUP BY cifc "
+				+ "HAVING avg(CANTIDAD) > (select avg(cantidad)from distribucion)";
+		
+		rs = stat.executeQuery(query);
+		
+		while(rs.next()){
+			System.out.println(rs.getString("cifc") + "\t" + rs.getFloat("average"));
+		}
+		System.out.println();
+		
+		
+		rs.close();
+		stat.close();
+		conn.close();
+		
 	}
 
 	/*
