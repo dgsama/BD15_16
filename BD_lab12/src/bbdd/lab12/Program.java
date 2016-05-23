@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class Program {
 
 	public static Connection conn;
-	
-	
+	public static final String pass = "UO237464";
+
 	public static void main(String[] args) throws SQLException {
 		//
 		// // Ejemplos para leer por teclado
@@ -15,7 +15,7 @@ public class Program {
 		// int entero = ReadInt();
 		// System.out.println("Leer una cadena por teclado");
 		// String cadena = ReadString();
-		
+
 		exercise1_1();
 		exercise1_2();
 	}
@@ -23,11 +23,9 @@ public class Program {
 	private static Connection createConnection() {
 		conn = null;
 		try {
-			conn = DriverManager.getConnection(
-					"jdbc:oracle:thin:@156.35.94.99:1521:DESA", "UO237464",
-					"UO237464");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@156.35.94.99:1521:DESA", "UO237464", pass);
 		} catch (SQLException e) {
-			e.printStackTrace();;
+			e.printStackTrace();
 		}
 		return conn;
 	}
@@ -41,28 +39,28 @@ public class Program {
 	public static void exercise1_1() throws SQLException {
 		conn = createConnection();
 		Statement stat = null;
-		ResultSet rs;
-		
+		ResultSet result = null;
+
 		System.out.println("Exercise 1_1 \n");
-		
-		try{
+
+		try {
 			stat = conn.createStatement();
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		String query = "SELECT nombre, apellido"
 				+ " FROM Clientes NATURAL JOIN Ventas NATURAL JOIN Concesionarios NATURAL JOIN Coches"
 				+ " WHERE ciudadc = 'madrid' AND modelo = 'gti' ";
-		rs = stat.executeQuery(query);
-		
-		while(rs.next()){
-			System.out.println(rs.getString("nombre") + " " + rs.getString("apellido"));
+
+		result = stat.executeQuery(query);
+
+		while (result.next()) {
+			System.out.println(result.getString("nombre") + " " + result.getString("apellido"));
 		}
 		System.out.println();
-		
-		
-		rs.close();
+
+		result.close();
 		stat.close();
 		conn.close();
 	}
@@ -75,28 +73,25 @@ public class Program {
 		conn = createConnection();
 		Statement stat = null;
 		ResultSet rs;
-		
+
 		System.out.println("Exercise 1_2 \n");
-		
-		try{
+
+		try {
 			stat = conn.createStatement();
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		String query ="SELECT cifc, avg(CANTIDAD) as average "
-				+ "FROM Distribucion "
-				+ "GROUP BY cifc "
+
+		String query = "SELECT cifc, avg(CANTIDAD) as average " + "FROM Distribucion " + "GROUP BY cifc "
 				+ "HAVING avg(CANTIDAD) > (select avg(cantidad)from distribucion)";
-		
+
 		rs = stat.executeQuery(query);
-		
-		while(rs.next()){
-			System.out.println(rs.getString("cifc") + "\t" + rs.getFloat("average"));
+
+		while (rs.next()) {
+			System.out.println(rs.getString("cifc") + "\t" + rs.getFloat(2));
 		}
 		System.out.println();
-		
-		
+
 		rs.close();
 		stat.close();
 		conn.close();
@@ -112,32 +107,29 @@ public class Program {
 		conn = createConnection();
 		Statement stat = null;
 		ResultSet rs;
-		
+
 		System.out.println("Exercise 2 \n");
-		
-		try{
+
+		try {
 			stat = conn.createStatement();
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		String query ="SELECT cifc, avg(CANTIDAD) as average "
-				+ "FROM Distribucion "
-				+ "GROUP BY cifc "
+
+		String query = "SELECT cifc, avg(CANTIDAD) as average " + "FROM Distribucion " + "GROUP BY cifc "
 				+ "HAVING avg(CANTIDAD) > (select avg(cantidad)from distribucion)";
-		
+
 		rs = stat.executeQuery(query);
-		
-		while(rs.next()){
-			System.out.println(rs.getString("cifc") + "\t" + rs.getFloat("average"));
+
+		while (rs.next()) {
+			System.out.println(rs.getString("cifc") + "\t" + rs.getDouble(2));
 		}
 		System.out.println();
-		
-		
+
 		rs.close();
 		stat.close();
 		conn.close();
-		
+
 	}
 
 	/*
